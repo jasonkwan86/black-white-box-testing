@@ -49,7 +49,16 @@ class FeesCalculatorTest {
     class NonStudentWithdrawalTests {
 
         @Test
-        @DisplayName("test 1: balance 0.00 should have 0.3% fee")
+        @DisplayName("test 1: balance -500.00 should have 0.3% fee")
+        void balance_negative_is_point_three_percent_fee() {
+            // should fail, spec says 0.3%, code says 0.2%
+            double expectedFee = WITHDRAWAL_AMOUNT * 0.003;
+            double actualFee = feesCalculator.calculateWithdrawalFee(WITHDRAWAL_AMOUNT, -500.00, false, Calendar.MONDAY);
+            assertEquals(expectedFee, actualFee, DELTA);
+        }
+
+        @Test
+        @DisplayName("test 2: balance 0.00 should have 0.3% fee")
         void balance_zero_is_point_three_percent_fee() {
             // should fail, spec says 0.3%, code says 0.2%
             double expectedFee = WITHDRAWAL_AMOUNT * 0.003;
@@ -58,7 +67,7 @@ class FeesCalculatorTest {
         }
 
         @Test
-        @DisplayName("test 2: balance 999.99 should have 0.3% fee")
+        @DisplayName("test 3: balance 999.99 should have 0.3% fee")
         void balance_just_below_1000_is_point_three_percent_fee() {
             // should fail, spec says 0.3%, code says 0.2%
             double expectedFee = WITHDRAWAL_AMOUNT * 0.003;
@@ -67,7 +76,7 @@ class FeesCalculatorTest {
         }
 
         @Test
-        @DisplayName("test 3: balance 1000.00 should have 0.1% fee")
+        @DisplayName("test 4: balance 1000.00 should have 0.1% fee")
         void balance_at_1000_is_point_one_percent_fee() {
             double expectedFee = WITHDRAWAL_AMOUNT * 0.001;
             double actualFee = feesCalculator.calculateWithdrawalFee(WITHDRAWAL_AMOUNT, 1000.00, false, Calendar.MONDAY);
@@ -75,7 +84,7 @@ class FeesCalculatorTest {
         }
 
         @Test
-        @DisplayName("test 4: balance 4999.99 should have 0.1% fee")
+        @DisplayName("test 5: balance 4999.99 should have 0.1% fee")
         void balance_just_below_5000_is_point_one_percent_fee() {
             double expectedFee = WITHDRAWAL_AMOUNT * 0.001;
             double actualFee = feesCalculator.calculateWithdrawalFee(WITHDRAWAL_AMOUNT, 4999.99, false, Calendar.MONDAY);
@@ -83,7 +92,7 @@ class FeesCalculatorTest {
         }
 
         @Test
-        @DisplayName("test 5: balance 5000.00 should have 0.1% fee per spec")
+        @DisplayName("test 6: balance 5000.00 should have 0.1% fee per spec")
         void balance_at_5000_is_point_one_percent_fee() {
             double expectedFee = WITHDRAWAL_AMOUNT * 0.001;
             double actualFee = feesCalculator.calculateWithdrawalFee(WITHDRAWAL_AMOUNT, 5000.00, false, Calendar.MONDAY);
@@ -91,11 +100,20 @@ class FeesCalculatorTest {
         }
 
         @Test
-        @DisplayName("test 6: balance 5000.01 should have NO fee per spec")
+        @DisplayName("test 7: balance 5000.01 should have NO fee per spec")
         void balance_just_above_5000_is_no_fee() {
-            // should fail, spec says no fee over 5000, code charges 0.1%
+            // should fail, spec says no fee over 5000, but code charges 0.1%
             double expectedFee = 0.00;
             double actualFee = feesCalculator.calculateWithdrawalFee(WITHDRAWAL_AMOUNT, 5000.01, false, Calendar.MONDAY);
+            assertEquals(expectedFee, actualFee, DELTA);
+        }
+
+        @Test
+        @DisplayName("test 8: balance 7500.00 (nominal) should have NO fee per spec")
+        void balance_nominal_above_5000_is_no_fee() {
+            // should fail, spec says no fee, but code charges 0.1% as it's below 10000
+            double expectedFee = 0.00;
+            double actualFee = feesCalculator.calculateWithdrawalFee(WITHDRAWAL_AMOUNT, 7500.00, false, Calendar.MONDAY);
             assertEquals(expectedFee, actualFee, DELTA);
         }
     }
