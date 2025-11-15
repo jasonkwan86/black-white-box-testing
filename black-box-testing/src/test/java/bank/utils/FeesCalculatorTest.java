@@ -13,16 +13,6 @@ class FeesCalculatorTest {
     private static final double WITHDRAWAL_AMOUNT = 100.0;
     private static final double DELTA = 0.001;
 
-    @BeforeEach
-    void setUp() throws Exception {
-        calculator = new FeesCalculator();
-    }
-
-    @AfterEach
-    void tearDown() throws Exception {
-    }
-
-
     @Nested
     @DisplayName("withdrawal fee tests")
     class WithdrawalTests {
@@ -119,6 +109,7 @@ class FeesCalculatorTest {
     class DepositTests
     {
         @Test
+        @DisplayName("Test 1: Deposit below 0")
         void depositInterestTest_StudentDepositBelow0() {
             // shouldn't be able to deposit negative amounts
             // in real life interest rate should always be positive
@@ -127,11 +118,13 @@ class FeesCalculatorTest {
         }
 
         @Test
+        @DisplayName("Test 2: Deposit Equal to 0")
         void depositInterestTest_StudentDepositEqual0() {
             assertEquals(0, calculator.calculateDepositInterest(0, 100, true));
         }
 
         @Test
+        @DisplayName("Test 3: Deposit with balance below 0")
         void depositInterestTest_StudentDepositBalanceBelow0() {
             // shouldn't be able to deposit negative amounts
             // in real life interest rate should always be positive
@@ -140,31 +133,43 @@ class FeesCalculatorTest {
         }
 
         @Test
+        @DisplayName("Test 4: Deposit with balance equal to 0")
         void depositInterestTest_StudentDepositBalanceEqual0() {
-            assertEquals(0.0, calculator.calculateDepositInterest(1, 0, true));
+            assertEquals(0, calculator.calculateDepositInterest(1, 0, true));
         }
 
         @Test
+        @DisplayName("Test 5: Expected interest rate of 0.5%")
         void depositInterestTest_StudentDepositAbove50BalanceAbove500() {
-            assertEquals(0.005, calculator.calculateDepositInterest(51, 501, true));
+            double amount = 51;
+            double expectedInterest = amount * 0.005;
+            assertEquals(expectedInterest, calculator.calculateDepositInterest(amount, 501, true));
         }
 
         @Test
+        @DisplayName("Test 6: Expected interest rate of 0.25%")
         void depositInterestTest_StudentDepositAbove50BalanceNotAbove500() {
-            assertEquals(0.0025, calculator.calculateDepositInterest(51, 500, true));
+            double amount = 51;
+            double expectedInterest = amount * 0.0025;
+            assertEquals(expectedInterest, calculator.calculateDepositInterest(51, 499, true));
         }
 
         @Test
+        @DisplayName("Test 7: Expected interest rate of 0.5%")
         void depositInterestTest_StudentDepositNotAbove50BalanceAbove5000() {
-            assertEquals(0.005, calculator.calculateDepositInterest(50, 5001, true));
+            double amount = 49;
+            double expectedInterest = amount * 0.005;
+            assertEquals(expectedInterest, calculator.calculateDepositInterest(49, 5001, true));
         }
 
         @Test
+        @DisplayName("Test 8: Expected interest rate of 0%")
         void depositInterestTest_StudentDepositNotAbove50BalanceNotAbove5000() {
-            assertEquals(0, calculator.calculateDepositInterest(50, 5000, true));
+            assertEquals(0, calculator.calculateDepositInterest(49, 4999, true));
         }
 
         @Test
+        @DisplayName("Test 9: Expected interest rate of 0.8%")
         void depositInterestTest_NotStudentDepositAbove250BalanceAbove2500() {
             double amount = 251;
             double expectedInterest = amount * 0.008;
@@ -172,23 +177,26 @@ class FeesCalculatorTest {
         }
 
         @Test
+        @DisplayName("Test 10: Expected interest rate of 0.4%")
         void depositInterestTest_NotStudentDepositAbove250BalanceNotAbove2500() {
             double amount = 251;
             double expectedInterest = amount * 0.004;
-            assertEquals(expectedInterest, calculator.calculateDepositInterest(amount, 2500, false));
+            assertEquals(expectedInterest, calculator.calculateDepositInterest(amount, 2499, false));
         }
 
         @Test
+        @DisplayName("Test 11: Expected interest rate of 0%")
         void depositInterestTest_NotStudentDepositNotAbove250BalanceAbove10000() {
-            double amount = 250;
+            double amount = 249;
             assertEquals(0, calculator.calculateDepositInterest(amount, 10001, false));
         }
 
         @Test
+        @DisplayName("Test 12: Expected interest rate of 0.1%")
         void depositInterestTest_NotStudentDepositNotAbove250BalanceNotAbove10000() {
-            double amount = 250;
+            double amount = 249;
             double expectedInterest = amount * 0.001;
-            assertEquals(expectedInterest, calculator.calculateDepositInterest(amount, 10000, false));
+            assertEquals(expectedInterest, calculator.calculateDepositInterest(amount, 9999, false));
         }
     }
 
