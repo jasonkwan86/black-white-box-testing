@@ -151,7 +151,7 @@ class FeesCalculatorTest {
         void depositInterestTest_StudentDepositAbove50BalanceNotAbove500() {
             double amount = 51;
             double expectedInterest = amount * 0.0025;
-            assertEquals(expectedInterest, calculator.calculateDepositInterest(51, 499, true));
+            assertEquals(expectedInterest, calculator.calculateDepositInterest(amount, 499, true));
         }
 
         @Test
@@ -159,7 +159,7 @@ class FeesCalculatorTest {
         void depositInterestTest_StudentDepositNotAbove50BalanceAbove5000() {
             double amount = 49;
             double expectedInterest = amount * 0.005;
-            assertEquals(expectedInterest, calculator.calculateDepositInterest(49, 5001, true));
+            assertEquals(expectedInterest, calculator.calculateDepositInterest(amount, 5001, true));
         }
 
         @Test
