@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FeesCalculatorTest {
-    private FeesCalculator calculator;
+    private final FeesCalculator calculator = new FeesCalculator();
     private static final double WITHDRAWAL_AMOUNT = 100.0;
     private static final double DELTA = 0.001;
 
