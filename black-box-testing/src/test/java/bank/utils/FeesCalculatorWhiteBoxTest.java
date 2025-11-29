@@ -150,4 +150,169 @@ public class FeesCalculatorWhiteBoxTest {
             assertEquals(expectedFeeFromSpec, actualFee, DELTA);
         }
     }
+
+    @Nested
+    @DisplayName("Transfer tests (Basis path testing)")
+    class TransferTests
+    {
+        @Test
+        @DisplayName("Basis Path 1: s=true, at < 200, fb < 2000, tb <1000, expected fee = 0.1%")
+        void testTransferPath1()
+        {
+            double amountTransferred = 198;
+            double expectedFee = amountTransferred * 0.001;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 1998, 998, true);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 2: s=true, at < 200, fb < 2000, tb >=1000, expected fee = 0.05%")
+        void testTransferPath2()
+        {
+            double amountTransferred = 198;
+            double expectedFee = amountTransferred * 0.0005;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 1998, 1002, true);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 3: s=true, at < 200, fb >= 2000, tb <1000, expected fee = 0.05%")
+        void testTransferPath3()
+        {
+            double amountTransferred = 198;
+            double expectedFee = amountTransferred * 0.0005;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 2002, 998, true);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 4: s=true, at < 200, fb >= 2000, tb >=1000, expected fee = 0.025%")
+        void testTransferPath4()
+        {
+            double amountTransferred = 198;
+            double expectedFee = amountTransferred * 0.00025;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 2002, 1002, true);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 5: s=true, at >= 200, fb < 2000, tb <1000, expected fee = 0.05%")
+        void testTransferPath5()
+        {
+            double amountTransferred = 202;
+            double expectedFee = amountTransferred * 0.0005;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 1998, 998, true);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 6: s=true, at >= 200, fb < 2000, tb >=1000, expected fee = 0.025%")
+        void testTransferPath6()
+        {
+            double amountTransferred = 202;
+            double expectedFee = amountTransferred * 0.00025;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 1998, 1002, true);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 7: s=true, at >= 200, fb >= 2000, tb <1000, expected fee = 0.05%")
+        void testTransferPath7()
+        {
+            double amountTransferred = 202;
+            double expectedFee = amountTransferred * 0.0005;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 2002, 998, true);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 8: s=true, at >= 200, fb >= 2000, tb >=1000, expected fee = 0.125%")
+        void testTransferPath8()
+        {
+            double amountTransferred = 202;
+            double expectedFee = amountTransferred * 0.00125;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 2002, 1002, true);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 9: s=false, at < 100, fb < 4000, tb < 2000, expected fee = 0.2%")
+        void testTransferPath9()
+        {
+            double amountTransferred = 98;
+            double expectedFee = amountTransferred * 0.002;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 3998, 1998, false);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 10: s=false, at < 100, fb < 4000, tb >= 2000, expected fee = 0.1%")
+        void testTransferPath10()
+        {
+            double amountTransferred = 98;
+            double expectedFee = amountTransferred * 0.001;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 3998, 2002, false);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 11: s=false, at < 100, fb >= 4000, tb < 2000, expected fee = 1%")
+        void testTransferPath11()
+        {
+            double amountTransferred = 98;
+            double expectedFee = amountTransferred * 0.01;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 4002, 1998, false);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 12: s=false, at < 100, fb >= 4000, tb >= 2000, expected fee = 0.5%")
+        void testTransferPath12()
+        {
+            double amountTransferred = 98;
+            double expectedFee = amountTransferred * 0.005;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 4002, 1998, false);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 13: s=false, at >= 100, fb < 2000, tb < 1000, expected fee = 0.2%")
+        void testTransferPath13()
+        {
+            double amountTransferred = 102;
+            double expectedFee = amountTransferred * 0.002;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 1998, 998, false);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 14: s=false, at >= 100, fb < 2000, tb > 1000, expected fee = 0.1%")
+        void testTransferPath14()
+        {
+            double amountTransferred = 102;
+            double expectedFee = amountTransferred * 0.001;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 1998, 1002, false);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 15: s=false, at >= 100, fb >= 2000, tb < 1000, expected fee = 0.5%")
+        void testTransferPath15()
+        {
+            double amountTransferred = 102;
+            double expectedFee = amountTransferred * 0.005;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 2002, 998, false);
+            assertEquals(expectedFee, actualFee);
+        }
+
+        @Test
+        @DisplayName("Basis Path 16: s=false, at >= 100, fb >= 2000, tb >= 1000, expected fee = 0.25%")
+        void testTransferPath16()
+        {
+            double amountTransferred = 102;
+            double expectedFee = amountTransferred * 0.0025;
+            double actualFee = feesCalculator.calculateTransferFee(amountTransferred, 2002, 1002, false);
+            assertEquals(expectedFee, actualFee);
+        }
+    }
 }
